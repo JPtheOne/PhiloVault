@@ -15,4 +15,4 @@ lemmas_fr = [token.lemma_ for token in doc_fr if not (token.is_stop or token.is_
 
 
 print("LEMMATIZED, STOP WORDS AND PUNCTUATION REMOVED ENGLISH TEXT: ", lemmas_en)
-print("LEMMATIZED, STOP WORDS AND PUNCTUATION REMOVED FRENCH TEXT: ", lemmas_fr)
+#print("LEMMATIZED, STOP WORDS AND PUNCTUATION REMOVED FRENCH TEXT: ", lemmas_fr)

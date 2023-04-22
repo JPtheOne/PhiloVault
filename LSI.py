@@ -43,10 +43,11 @@ def apply_svd(tf_matrix, k=2):
     return reduced_matrix
 
 
+
 #-----------------------Testing Methods--------------------------#
 preprocessed_docs = [
-    ['survey'],
-    ['survey'],
+    ['survey',"god"],
+    ['survey',"god"], 
     ['survey', 'user', 'computer', 'cat', 'cat', 'bird','bird'],
     ['survey', 'user', 'computer', 'system', 'response', 'time']
     
@@ -71,9 +72,8 @@ printable_reduced_matrix_df = pd.DataFrame(reduced_matrix, index=term_frequency_
 
 #print("Reduced Frequency Table: ")
 #print(printable_reduced_matrix_df)
-mtx = term_frequency_matrix.to_numpy()
-formula = "cosine"
-
+mtx = reduced_matrix
+formula = "inner"
 print(f"{formula} similarity: ", calculate_similarity(formula, mtx, 0,1))
 
 formula = "cosine"

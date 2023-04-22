@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+#from scipy.spatial.distance import cosine
 from gensim import corpora
+from Proximity_measures import*
 
 def FreqT_generation(docs):
     # Create a dictionary based on the preprocessed documents
@@ -23,18 +25,6 @@ def FreqT_generation(docs):
     term_frequency_df_transposed = term_frequency_df.T
     return term_frequency_df_transposed
 
-
-preprocessed_docs = [
-    ['survey', 'user', 'computer', 'cat', 'cat', 'bird','bird'],
-    ['survey', 'user', 'computer', 'system', 'response', 'time'],
-    ['survey']
-
-    # More preprocessed documents here...
-]
-
-FreqT = (FreqT_generation(preprocessed_docs))
-print("Frequency Table: \n",FreqT)
-
 def apply_svd(tf_matrix, k=2):
     # Convert the term-frequency DataFrame to a NumPy array
     tf_matrix_np = tf_matrix.to_numpy()
@@ -52,17 +42,39 @@ def apply_svd(tf_matrix, k=2):
 
     return reduced_matrix
 
+
+#-----------------------Testing Methods--------------------------#
+preprocessed_docs = [
+    ['survey'],
+    ['survey'],
+    ['survey', 'user', 'computer', 'cat', 'cat', 'bird','bird'],
+    ['survey', 'user', 'computer', 'system', 'response', 'time']
+    
+
+
+    # More preprocessed documents here...
+                    ]
+
+FreqT = (FreqT_generation(preprocessed_docs))
+#print("Frequency Table: \n",FreqT)
+
+
 # Call your FreqT_generation method to obtain the term-frequency matrix
 term_frequency_matrix = FreqT_generation(preprocessed_docs)
 
-# Choose the desired number of components (k)
-k = 3
 
 # Apply SVD to the term-frequency matrix and get the reduced matrix
-reduced_matrix = apply_svd(term_frequency_matrix, k)
+reduced_matrix = apply_svd(term_frequency_matrix, 3)
 
 # Convert the reduced matrix back to a Pandas DataFrame with the same format as the input term-frequency matrix
 printable_reduced_matrix_df = pd.DataFrame(reduced_matrix, index=term_frequency_matrix.index, columns=term_frequency_matrix.columns)
 
-print("Reduced Frequency Table: ")
-print(printable_reduced_matrix_df)
+#print("Reduced Frequency Table: ")
+#print(printable_reduced_matrix_df)
+mtx = term_frequency_matrix.to_numpy()
+formula = "cosine"
+
+print(f"{formula} similarity: ", calculate_similarity(formula, mtx, 0,1))
+
+formula = "cosine"
+print(f"{formula} disimilarity: ", calculate_dissimilarity(formula, mtx, 0,1))

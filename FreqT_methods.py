@@ -41,6 +41,7 @@ def apply_svd(tf_matrix, k=2): #Receives a FreqT and a k to apply SVD
 
     return reduced_matrix
 
+
 def find_bestDocs(query, n, preprocessed_docs, sFormula, dFormula):
     similarity_scores = []
     disimilarity_scores = []

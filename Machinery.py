@@ -1,13 +1,27 @@
 from Libraries import*
 
-def MenuDisplayer():
+def QueryChooser():
+    while True:
+        print("------CHOOSE QUERY-------- \n What query would you like to perform: \n 1. Compare 2 docs similarity \n 2. Type a query \n 3.Exit")
+        qChoice = int(input("Type the number of the option: "))
+        
+        if qChoice == 1:
+            d0 = print(input("Type the indexes of the first doc to compare"))
+            d1 = print(input("Type the indexes of the second doc to compare"))
+                
+
+
+
+
+
+
+def LibraryChooser():
     while True:
         print("------------------------MAIN MENU-------------------- \n Choose your library: \n 1. English \n 2. French \n 3.Exit")
         library = int(input("Type the number of the option: "))
 
         if library == 1:
             launch_Library("EN")
-
             
         elif library == 2:
             pass
@@ -18,7 +32,7 @@ def MenuDisplayer():
             print("Not valid, try again")
 
 
-MenuDisplayer()
+LibraryChooser()
 
 '''
 #-----------------------Testing Methods--------------------------#

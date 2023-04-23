@@ -31,23 +31,6 @@ formula = "cosine"
 #print(f"{formula} disimilarity: ", calculate_dissimilarity(formula, mtx, 0,1))
 
 
-'''
-preprocessed_docs.append(query)
-
-New_FreqT = FreqT_generation(preprocessed_docs)
-print("NEW FREQT WITH Q IS: \n", New_FreqT)
-
-New_reducedMatrix = apply_svd(New_FreqT, 3)
-
-# Convert the New_reducedMatrix back to a Pandas DataFrame with the same format as the input term-frequency matrix
-printable_new_reduced_matrix_df = pd.DataFrame(New_reducedMatrix, index=New_FreqT.index, columns=New_FreqT.columns)
-print("Reduced Frequency Table (With Query): \n ", printable_new_reduced_matrix_df)
-
-
-New_Doc = New_reducedMatrix[:,-1]
-print("NEW DOC IS: ",New_Doc)
-'''
-
 query  = ["survey","god"]
 print("Query is: ", query)
 n = 2
@@ -68,7 +51,7 @@ def find_bestDocs(query, n, preprocessed_docs):
     print("NEW DOC IS: ",New_Doc)
 
 
-    for doc in range(New_reducedMatrix.shape[1]-1):
+    for i, doc in enumerate(range(New_reducedMatrix.shape[1]-1)):
         similarity = calculate_similarity("Jac",New_reducedMatrix, doc, -1)
         similarity_scores.append(similarity)
     

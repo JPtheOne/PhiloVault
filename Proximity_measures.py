@@ -1,9 +1,8 @@
 import numpy as np
 from  scipy.spatial.distance import *
 
-
-    
-def calculate_similarity(formula, matrix, col1,col2):
+def calculate_similarity(formula, matrix, col1,col2):   #Takes the formula a reduced matrix and two documents 
+                                                        # to return the similarity
     vec1 = matrix[:, col1]
     vec2 = matrix[:, col2]
 
@@ -17,7 +16,7 @@ def calculate_similarity(formula, matrix, col1,col2):
         similarity = np.inner(vec1_normalized, vec2_normalized)
     return similarity
 
-def calculate_dissimilarity(formula, matrix, col1,col2):
+def calculate_dissimilarity(formula, matrix, col1,col2): #Same as above but with dissimilarity
     vec1 = matrix[:, col1]
     vec2 = matrix[:, col2]
 

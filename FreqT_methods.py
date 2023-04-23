@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 from gensim import corpora
-def FreqT_generation(docs):
+
+def FreqT_generation(docs): #Takes a set of tokenized words to create a FreqT
     # Create a dictionary based on the preprocessed documents
     dictionary = corpora.Dictionary(docs)
 
@@ -22,7 +23,7 @@ def FreqT_generation(docs):
     term_frequency_df_transposed = term_frequency_df.T
     return term_frequency_df_transposed
 
-def apply_svd(tf_matrix, k=2):
+def apply_svd(tf_matrix, k=2): #Receives a FreqT and a k to apply SVD 
     # Convert the term-frequency DataFrame to a NumPy array
     tf_matrix_np = tf_matrix.to_numpy()
 

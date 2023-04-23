@@ -1,6 +1,9 @@
-from FreqT_methods import *
+from DB.SQL_methods import*
+from FreqT_methods import*
+from Preprocess import*
 from Proximity_measures import*
 
+'''
 #-----------------------Testing Methods--------------------------#
 preprocessed_docs = [
     ['survey',"god"],
@@ -30,33 +33,20 @@ formula = "inner"
 formula = "cosine"
 #print(f"{formula} disimilarity: ", calculate_dissimilarity(formula, mtx, 0,1))
 
-
 query  = ["survey","god"]
 print("Query is: ", query)
-n = 2
+n = 4
+sFormula = "cosine"
+dFormula = "euc"
 
-def find_bestDocs(query, n, preprocessed_docs):
-    similarity_scores = []
+scores = find_bestDocs(query, n, preprocessed_docs, sFormula, dFormula)
+similar_docs, dissimilar_docs = scores
 
-    preprocessed_docs.append(query)
+print(f"Top N similar documents calculates using {sFormula}:")
+for index, score in similar_docs:
+    print(f"doc {index}: similarity = {score}")
 
-    New_FreqT = FreqT_generation(preprocessed_docs)
-    print("NEW FREQT WITH Q IS: \n", New_FreqT)
-
-    New_reducedMatrix = apply_svd(New_FreqT, 3)
-    printable_new_reduced_matrix_df = pd.DataFrame(New_reducedMatrix, index=New_FreqT.index, columns=New_FreqT.columns)
-    print("Reduced Frequency Table (With Query): \n ", printable_new_reduced_matrix_df)
-
-    New_Doc = reduced_matrix[:,-1]
-    print("NEW DOC IS: ",New_Doc)
-
-
-    for i, doc in enumerate(range(New_reducedMatrix.shape[1]-1)):
-        similarity = calculate_similarity("Jac",New_reducedMatrix, doc, -1)
-        similarity_scores.append(similarity)
-    
-    return similarity_scores
-
-
-scores = (find_bestDocs(query, n, preprocessed_docs))
-print("Comparisons with New doc and other docs are: ", scores)
+print(f"Top N dissimilar documents calculates using {dFormula}:")
+for index, score in dissimilar_docs:
+    print(f"doc {index}: dissimilarity = {score}")
+'''

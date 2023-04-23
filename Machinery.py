@@ -1,7 +1,24 @@
-from DB.SQL_methods import*
-from FreqT_methods import*
-from Preprocess import*
-from Proximity_measures import*
+from Libraries import*
+
+def MenuDisplayer():
+    while True:
+        print("------------------------MAIN MENU-------------------- \n Choose your library: \n 1. English \n 2. French \n 3.Exit")
+        library = int(input("Type the number of the option: "))
+
+        if library == 1:
+            launch_Library("EN")
+
+            
+        elif library == 2:
+            pass
+        elif library == 3:
+            print("Bye!")
+            break
+        else:
+            print("Not valid, try again")
+
+
+MenuDisplayer()
 
 '''
 #-----------------------Testing Methods--------------------------#

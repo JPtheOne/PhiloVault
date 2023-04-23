@@ -22,9 +22,7 @@ def get_docContent():
         print(f"Text: {text}")
         print()
    
-    
     #Closing database
     cursor.close()
     connection.close()
 
-get_docContent()

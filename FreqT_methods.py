@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from gensim import corpora
+from Proximity_measures import*
 
 def FreqT_generation(docs): #Takes a set of tokenized words to create a FreqT
     # Create a dictionary based on the preprocessed documents
@@ -39,3 +40,35 @@ def apply_svd(tf_matrix, k=2): #Receives a FreqT and a k to apply SVD
     reduced_matrix = U_k @ Sigma_k @ Vt_k
 
     return reduced_matrix
+
+def find_bestDocs(query, n, preprocessed_docs, sFormula, dFormula):
+    similarity_scores = []
+    disimilarity_scores = []
+
+    preprocessed_docs.append(query)
+
+    New_FreqT = FreqT_generation(preprocessed_docs)
+    print("NEW FREQT WITH Q IS: \n", New_FreqT)
+
+    New_reducedMatrix = apply_svd(New_FreqT, 3)
+    printable_new_reduced_matrix_df = pd.DataFrame(New_reducedMatrix, index=New_FreqT.index, columns=New_FreqT.columns)
+    print("Reduced Frequency Table (With Query): \n ", printable_new_reduced_matrix_df)
+
+    New_Doc = New_reducedMatrix[:,-1]
+    print("NEW DOC IS: ",New_Doc)
+
+
+    for i, doc in enumerate(range(New_reducedMatrix.shape[1]-1)):
+        similarity = calculate_similarity(sFormula,New_reducedMatrix, doc, -1)
+        disimilarity = calculate_dissimilarity(dFormula, New_reducedMatrix, doc, -1)
+
+        similarity_scores.append((i,similarity))
+        disimilarity_scores.append((i, disimilarity))
+    
+    similarity_scores.sort(key=lambda x: x[1], reverse=True)
+    disimilarity_scores.sort(key=lambda x: x[1])
+
+    N_similarDocs = similarity_scores[:n:]
+    N_disimilarDocs = disimilarity_scores[:n:]
+
+    return N_similarDocs, N_disimilarDocs

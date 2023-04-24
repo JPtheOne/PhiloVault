@@ -8,7 +8,7 @@ def calculate_similarity(formula, matrix, col1,col2):   #Takes the formula a red
 
     if formula == "cosine": #-1 means different, 0 orthogonal, 1 identical
         similarity = 1-cosine(vec1, vec2)
-    elif formula == "Jac": #0 different, 1 identical
+    elif formula == "jac": #0 different, 1 identical
         similarity = jaccard(vec1, vec2)  
     elif formula == "inner" :#0 different, 1 identical
         vec1_normalized = vec1 / np.linalg.norm(vec1)

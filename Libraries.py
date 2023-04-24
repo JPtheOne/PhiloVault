@@ -12,6 +12,11 @@ def launch_Library(language):
     
     #3. Create FreqT and reduce it through SVD
     FreqT = (FreqT_generation(processedDocs))
+    print("The FreqT is: ", FreqT)
+
     reduced_FreqT = apply_svd(FreqT, 3)
+    print("The reduced FreqT is: ", reduced_FreqT)
 
     return retrieved_Docs, processedDocs, FreqT, reduced_FreqT
+
+

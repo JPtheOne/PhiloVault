@@ -44,7 +44,10 @@ def LibraryChooser():
 
 
         elif library == 2:
-            pass
+            language = "FR"
+            retrieved_Docs, processedDocs, FreqT, reduced_FreqT = launch_Library(language)
+            print(QueryChooser(language, retrieved_Docs, processedDocs, FreqT, reduced_FreqT))
+
         elif library == 3:
             print("Bye!")
             break

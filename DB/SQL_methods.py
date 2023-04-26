@@ -30,3 +30,7 @@ def get_docContent(language): #Retrieve the texts from documents with given lang
     connection.close()
 
     return docs
+
+
+def insert_Term():
+    pass

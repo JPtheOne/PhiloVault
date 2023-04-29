@@ -7,15 +7,15 @@ class RootWindow():
     def __init__(self): 
         self.root = Tk()
         self.root.title("Menu")
-        self.root.geometry("400x200")
+        self.root.geometry("250x200")
         self.root.configure(bg='lightblue')
         self.root.iconbitmap('GUI_media/book.ico')
 
         # Label properties
         title = Label(self.root, text="Welcome to the cultural library!")
-        title.pack(pady=10)
+        title.grid(row = 0, column = 0, columnspan= 2, pady=10)
         label1 = Label(self.root, text="Choose your language")
-        label1.pack(pady=10)
+        label1.grid(row =1, column = 0, columnspan = 2, pady=10)
 
         # Declaring images to use in buttons
         en_image = Image.open("GUI_media/en.png")
@@ -28,59 +28,110 @@ class RootWindow():
 
         # Creating buttons
         en_button = Button(self.root, image=en_photo, command=lambda:LibraryMenu("EN"))
-        en_button.pack(side="left", padx=(0,10))
+        en_button.grid(row=2, column=0, padx=(0, 10))
 
         fr_button = Button(self.root, image=fr_photo, command=lambda:LibraryMenu("FR"))
-        fr_button.pack(side="right", padx=(10,0))
+        fr_button.grid(row=2, column=1, padx=(10, 0))
         
-        mainloop()
+        self.root.mainloop()
 
 
 class LibraryMenu:
     def __init__(self, language):
         #Window Properties
+        self.width = 854
+        self.height = 480
+        self.geometry = (str(self.width)+"x"+str(self.height))
         self.library = Toplevel()
         self.library.title("Library Menu")
-        self.geometry = ("854x480")
         self.library.iconbitmap('GUI_media/book.ico')
 
-        #Setting backgrounds
+        #Finding routes for bg picture
         if language == "EN":
             bg_image_path = 'GUI_media/en_bg.jpg'
         elif language == "FR":
             bg_image_path = 'GUI_media/fr_bg.jpg'
 
+        #Setting the background
         bg_image = Image.open(bg_image_path)
-        bg_image = bg_image.resize((854, 480), Image.ANTIALIAS)
+        bg_image = bg_image.resize((self.width, self.height), Image.ANTIALIAS)
         bg_image = ImageTk.PhotoImage(bg_image)
 
-        canvas = Canvas(self.library, width=854, height=480)
-        canvas.pack(fill="both", expand=True)
+        #Creating canvas to display the background
+        canvas = Canvas(self.library, width = self.width, height = self.height)
+        canvas.grid(row=0, column=0, sticky="nsew")
         canvas.create_image(0, 0, image=bg_image, anchor="nw")
-
-        # Keep a reference to the image object to avoid garbage collection
         canvas.image = bg_image
 
-        # Label properties
-        label1 = Label(self.library, text="What you want to do today?")
-        label1.place(x=350, y=10) # Adjust x and y values accordingly to position the label
+        #Declaration of frames. Each frame will hold a new design for each of the operations
+        self.compareFrame = Frame(self.library, bg ="")
+        self.queryFrame = Frame(self.library, bg ="")
 
-        #Button creation
-        button1 = Button(self.library, text="Compare two documents")
-        button1.place(x=350, y=150) # Adjust x and y values accordingly to position the button
+        # Declaring titles of the frames
+        # Compare docs title
+        title1_label = Label(self.compareFrame, text="Compare documents through similarity formulas")
+        title1_label.grid(row=0, column=0, columnspan=2, pady=10)
+        
+        #Querying title
+        title2_label = Label(self.queryFrame, text = "Input a query")
+        title2_label.grid(row =0, column = 0, columnspan=2, pady=10)
 
-        button2 = Button(self.library, text="Search relevant documents")
-        button2.place(x=350, y=250) # Adjust x and y values accordingly to position the button
+        # Create combo boxes for selecting documents
+        doc1_label = Label(self.compareFrame, text="Document 1:")
+        doc1_label.grid(row=1, column=0)
+        doc1_combobox = ttk.Combobox(self.compareFrame)
+        doc1_combobox.grid(row=1, column=1)
 
-        button3 = Button(self.library, text="Manipulate documents")
-        button3.place(x=350, y=350) # Adjust x and y values accordingly to position the button
+        doc2_label = Label(self.compareFrame, text="Document 2:")
+        doc2_label.grid(row=2, column=0)
+        doc2_combobox = ttk.Combobox(self.compareFrame)
+        doc2_combobox.grid(row=2, column=1)
 
-        button4 = Button(self.library, text ="Exit", command=self.library.destroy)
-        button4.place(x=700, y= 400)
 
+        #query_label = Label(self.queryFrame, text = "Type the query you wanna find")
+
+        # Create a combo box for choosing the formula
+        formula_label = Label(self.compareFrame, text="Select a formula:")
+        formula_label.grid(row=3, column=0)
+        formula_combobox = ttk.Combobox(self.compareFrame)
+        formula_combobox.grid(row=3, column=1)
+
+        # Create a textbox for displaying the result
+        result_label = Label(self.compareFrame, text="Result:")
+        result_label.grid(row=4, column=0)
+        result_text = Text(self.compareFrame, width=30, height=1)
+        result_text.grid(row=4, column=1)
+
+        def display_compareFrame():
+            self.queryFrame.grid_forget()
+            self.compareFrame.grid(row = 0, column = 0, sticky = "nsew")
+
+        def display_queryFrame():
+            self.compareFrame.grid_forget()
+            self.queryFrame.grid(row = 0, column = 0, sticky = "nsew")
+
+       
+        #Declare a menu bar for the window
+        menu_bar = Menu(self.library)
+        self.library.config(menu=menu_bar)
+
+        # Add file menu with its options
+        file_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="Exit", command=self.library.destroy)
+
+        # Add query menu with its options
+        query_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Query options", menu=query_menu)
+        query_menu.add_command(label="Compare two documents", command = display_compareFrame)
+        query_menu.add_command(label="Input a query", command = display_queryFrame)
+
+        # Add db menu with its options
+        db_menu = Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="Database options", menu=db_menu)
+        db_menu.add_command(label="Manipulate documents")
 
         self.library.mainloop()
 
-
-if __name__ == "__main__":
-    root_window = RootWindow()
+    
+RootWindow()

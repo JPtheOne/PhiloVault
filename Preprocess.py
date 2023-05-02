@@ -1,4 +1,3 @@
-
 import spacy
 
 def lemmatize(language, text):

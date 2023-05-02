@@ -16,6 +16,8 @@ def get_docContent(language): #Retrieve the texts from documents with given lang
     results = cursor.fetchall()
     
     docs = []
+            
+    print("-------RETRIEVED DOCS FROM DATABASE -------\n ")
     for result in results:
         id, title, author, content = result
         docs.append(content)
@@ -32,5 +34,16 @@ def get_docContent(language): #Retrieve the texts from documents with given lang
     return docs
 
 
-def insert_Term():
-    pass
+def insert_Term(dictionary): #Store temporary terms on database
+    connection = pymysql.connect(host = "localhost", user="root", password ="db2022", database="docsdb")
+    cursor = connection.cursor()
+
+    cursor.execute("TRUNCATE TABLE term")
+    connection.commit()
+
+    for word_id, word in dictionary.items():
+        cursor.execute("insert into TERM (id,term) VALUES (%s,%s)ON DUPLICATE KEY UPDATE term = %s", (word_id, word, word))
+    connection.commit()
+
+    cursor.close()
+    connection.close()

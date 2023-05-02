@@ -21,15 +21,18 @@ def QueryChooser(language, retrieved_Docs, processedDocs, FreqT, reduced_FreqT):
             processed_q = lemmatize(language, natural_q)
 
             values = find_bestDocs(processed_q, n, processedDocs, "cosine","euc")
-            print("THESE ARE THE BEST TWO DOCS: ", values)
-            
-        
+            print("Top {} most similar documents:".format(n))
+            for idx, score in values[0]:
+                print("Document {}: Similarity score = {}".format(idx, score))
+
+            print("\nTop {} most dissimilar documents:".format(n))
+            for idx, score in values[1]:
+                print("Document {}: Dissimilarity score = {}".format(idx, score))
+
+                
         elif qChoice == 3:
             print("Return")
             break
-
-
-
 
 def LibraryChooser():
     while True:

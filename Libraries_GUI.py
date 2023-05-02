@@ -38,7 +38,7 @@ class RootWindow():
 
 class LibraryMenu:
     def __init__(self, language):
-        #Window Properties
+        # region Window Properties
         self.width = 854
         self.height = 480
         self.geometry = (str(self.width)+"x"+str(self.height))
@@ -62,56 +62,76 @@ class LibraryMenu:
         canvas.grid(row=0, column=0, sticky="nsew")
         canvas.create_image(0, 0, image=bg_image, anchor="nw")
         canvas.image = bg_image
+        #endregion
 
-        #Declaration of frames. Each frame will hold a new design for each of the operations
-        self.compareFrame = Frame(self.library, bg ="")
-        self.queryFrame = Frame(self.library, bg ="")
 
-        # Declaring titles of the frames
-        # Compare docs title
-        title1_label = Label(self.compareFrame, text="Compare documents through similarity formulas")
-        title1_label.grid(row=0, column=0, columnspan=2, pady=10)
-        
-        #Querying title
-        title2_label = Label(self.queryFrame, text = "Input a query")
-        title2_label.grid(row =0, column = 0, columnspan=2, pady=10)
+        #Creating the widgets for compareFrame
+        def create_compareWidgets(self):
+            # Compare docs title
+            title_label = Label(self.compareFrame, text="Compare documents through similarity formulas")
+            title_label.grid(row=0, column=0, columnspan=2, pady=10)
 
         # Create combo boxes for selecting documents
-        doc1_label = Label(self.compareFrame, text="Document 1:")
-        doc1_label.grid(row=1, column=0)
-        doc1_combobox = ttk.Combobox(self.compareFrame)
-        doc1_combobox.grid(row=1, column=1)
+            doc1_label = Label(self.compareFrame, text="Document 1:")
+            doc1_label.grid(row=1, column=0)
+            doc1_combobox = ttk.Combobox(self.compareFrame)
+            doc1_combobox.grid(row=1, column=1)
 
-        doc2_label = Label(self.compareFrame, text="Document 2:")
-        doc2_label.grid(row=2, column=0)
-        doc2_combobox = ttk.Combobox(self.compareFrame)
-        doc2_combobox.grid(row=2, column=1)
+            doc2_label = Label(self.compareFrame, text="Document 2:")
+            doc2_label.grid(row=2, column=0)
+            doc2_combobox = ttk.Combobox(self.compareFrame)
+            doc2_combobox.grid(row=2, column=1)
 
+            # Create a combo box for choosing the formula
+            formula_label = Label(self.compareFrame, text="Select a formula:")
+            formula_label.grid(row=3, column=0)
+            formula_combobox = ttk.Combobox(self.compareFrame)
+            formula_combobox.grid(row=3, column=1)
 
-        #query_label = Label(self.queryFrame, text = "Type the query you wanna find")
-
-        # Create a combo box for choosing the formula
-        formula_label = Label(self.compareFrame, text="Select a formula:")
-        formula_label.grid(row=3, column=0)
-        formula_combobox = ttk.Combobox(self.compareFrame)
-        formula_combobox.grid(row=3, column=1)
-
-        # Create a textbox for displaying the result
-        result_label = Label(self.compareFrame, text="Result:")
-        result_label.grid(row=4, column=0)
-        result_text = Text(self.compareFrame, width=30, height=1)
-        result_text.grid(row=4, column=1)
+            # Create a textbox for displaying the result
+            result_label = Label(self.compareFrame, text="Result:")
+            result_label.grid(row=4, column=0)
+            result_text = Text(self.compareFrame, width=30, height=1)
+            result_text.grid(row=4, column=1)
+            
+        #Creating the widgets for queryFrame
+        def create_queryWidgets(self):
+            title_label = Label(self.queryFrame, text="Search the n most relevant documents!")
+            title_label.grid(row=0, column=0, columnspan=2, pady=10)
+    
+        def clear_widgets(frame):
+            for widgets in frame.winfo_children():
+                widgets.destroy()
 
         def display_compareFrame():
             self.queryFrame.grid_forget()
+            self.compareFrame.grid(row=0, column=0)
+
+            '''
+            create_compareWidgets(self)
+            clear_widgets(self.queryFrame)
             self.compareFrame.grid(row = 0, column = 0, sticky = "nsew")
+            '''
+
 
         def display_queryFrame():
             self.compareFrame.grid_forget()
+            self.queryFrame.grid(row=1, column=1)
+            '''
+            create_queryWidgets(self)
+            clear_widgets(self.compareFrame)
             self.queryFrame.grid(row = 0, column = 0, sticky = "nsew")
+            '''
 
-       
-        #Declare a menu bar for the window
+
+        #Declaration of frames. Each frame will hold a new design for each of the operations
+        self.compareFrame = Frame(self.library, bg ="")
+        create_compareWidgets(self)
+
+        self.queryFrame = Frame(self.library, bg ="")
+        create_queryWidgets(self)
+
+        #region menuBar declaration
         menu_bar = Menu(self.library)
         self.library.config(menu=menu_bar)
 
@@ -130,6 +150,7 @@ class LibraryMenu:
         db_menu = Menu(menu_bar, tearoff=0)
         menu_bar.add_cascade(label="Database options", menu=db_menu)
         db_menu.add_command(label="Manipulate documents")
+        #endregion
 
         self.library.mainloop()
 

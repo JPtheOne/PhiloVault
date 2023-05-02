@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 from gensim import corpora
+from DB.SQL_methods import insert_Term
 from Proximity_measures import*
 
 def FreqT_generation(docs): #Takes a set of tokenized words to create a FreqT
     # Create a dictionary based on the preprocessed documents
     dictionary = corpora.Dictionary(docs)
+
+    #Store the terms on the database
+    insert_Term(dictionary)
 
     # Convert the preprocessed documents to a bag-of-words representation
     corpus = [dictionary.doc2bow(doc) for doc in docs]
@@ -13,6 +17,7 @@ def FreqT_generation(docs): #Takes a set of tokenized words to create a FreqT
     # Calculate the term-frequency matrix
     term_frequency_matrix = []
 
+    #Iterate through the corpus
     for doc in corpus:
         row = [0] * len(dictionary)
         for word_id, frequency in doc:
@@ -21,10 +26,10 @@ def FreqT_generation(docs): #Takes a set of tokenized words to create a FreqT
 
     # Convert the term-frequency matrix to a Pandas DataFrame
     term_frequency_df = pd.DataFrame(term_frequency_matrix, columns=[dictionary[id] for id in dictionary])
-    term_frequency_df_transposed = term_frequency_df.T
-    return term_frequency_df_transposed
+    FreqT = term_frequency_df.T
+    return FreqT
 
-def apply_svd(tf_matrix, k=2): #Receives a FreqT and a k to apply SVD 
+def apply_svd(tf_matrix, k=3): #Receives a FreqT and a k to apply SVD 
     # Convert the term-frequency DataFrame to a NumPy array
     tf_matrix_np = tf_matrix.to_numpy()
 
@@ -49,15 +54,14 @@ def find_bestDocs(query, n, preprocessed_docs, sFormula, dFormula):
     preprocessed_docs.append(query)
 
     New_FreqT = FreqT_generation(preprocessed_docs)
-    print("NEW FREQT WITH Q IS: \n", New_FreqT)
+    #print("NEW FREQT WITH Q IS: \n", New_FreqT)
 
     New_reducedMatrix = apply_svd(New_FreqT, 3)
     printable_new_reduced_matrix_df = pd.DataFrame(New_reducedMatrix, index=New_FreqT.index, columns=New_FreqT.columns)
-    print("Reduced Frequency Table (With Query): \n ", printable_new_reduced_matrix_df)
+    #print("Reduced Frequency Table (With Query): \n ", printable_new_reduced_matrix_df)
 
     New_Doc = New_reducedMatrix[:,-1]
-    print("NEW DOC IS: ",New_Doc)
-
+    #print("NEW DOC IS: ",New_Doc)
 
     for i, doc in enumerate(range(New_reducedMatrix.shape[1]-1)):
         similarity = calculate_similarity(sFormula,New_reducedMatrix, doc, -1)

@@ -10,8 +10,14 @@ def QueryChooser(language, retrieved_Docs, processedDocs, FreqT, reduced_FreqT):
             d0 = int(input("Type the indexes of the first doc to compare: "))
             d1 = int(input("Type the indexes of the second doc to compare: "))
             sFormula = (input("Type cosine or jac to obtain similarity: "))
+            dFormula = (input("Type euc or man to obtain dissimilarity: "))
+
             similarity_2Docs = calculate_similarity(sFormula, reduced_FreqT, d0, d1)
             print(f"The similarity of the two documents using {sFormula} is: ",  similarity_2Docs)
+
+            dissimilarity_2Docs = calculate_dissimilarity(dFormula, reduced_FreqT, d0, d1)
+            print(f"The dissimilarity of the two documents using {dFormula} is: ",  dissimilarity_2Docs)
+
             
         
         elif qChoice == 2:

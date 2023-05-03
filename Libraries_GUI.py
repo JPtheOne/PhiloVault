@@ -1,6 +1,9 @@
+#Tkinter libraries
 from tkinter import*
 from tkinter import ttk
 from PIL import Image, ImageTk
+
+from Libraries import*
 
 class RootWindow():
     #Window properties 
@@ -35,7 +38,6 @@ class RootWindow():
         
         self.root.mainloop()
 
-
 class LibraryMenu:
     def __init__(self, language):
         # region Window Properties
@@ -45,6 +47,7 @@ class LibraryMenu:
         self.library = Toplevel()
         self.library.title("Library Menu")
         self.library.iconbitmap('GUI_media/book.ico')
+        launch_visualLibrary(language)
 
         #Finding routes for bg picture
         if language == "EN":
@@ -93,6 +96,8 @@ class LibraryMenu:
             result_label.grid(row=4, column=0)
             result_text = Text(self.compareFrame, width=30, height=1)
             result_text.grid(row=4, column=1)
+
+            #button = button
             
         #Creating the widgets for queryFrame
         def create_queryWidgets(self):
@@ -116,7 +121,7 @@ class LibraryMenu:
 
         def display_queryFrame():
             self.compareFrame.grid_forget()
-            self.queryFrame.grid(row=1, column=1)
+            self.queryFrame.grid(row=0, column=0)
             '''
             create_queryWidgets(self)
             clear_widgets(self.compareFrame)

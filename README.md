@@ -1,4 +1,4 @@
-# DocumentDatabase
+# PhiloVault
 Python application that retrieves and indexes documents stored on a mySQL database. The database is available on the text files. Once you've created the database on you connection, you'll be able to run the program.
 Keep in mind pip installation as follows for the needed libraries:
 ```
